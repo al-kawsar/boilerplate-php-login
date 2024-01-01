@@ -33,7 +33,7 @@ if ($password !== $passconfirm) {
 }
 
 $user = getUserByEmail($email);
-if ($user) {
+if ($user !== null) {
     $_SESSION['msg'] = [
         'type' => 'error',
         'text' => 'Email sudah di ambil'
@@ -42,21 +42,21 @@ if ($user) {
 }
 
 
+
 // hash password
 
 $password = password_hash($password, PASSWORD_BCRYPT);
+
 $id = uuid();
+
 $SQL = "INSERT INTO users VALUES ('$id','$name','$email','$password','user')";
 
-try {
-    $result = getConnection()->query($SQL);
+$result = getConnection()->query($SQL);
 
-    if ($result) {
-        return redirectTo('sign-in.php', 'Registration successful!');
-    } else {
-        echo 'Failed to register.';
-    }
-    getConnection()->close();
-} catch (\Exception $e) {
-    echo $e->getMessage();
+if ($result) {
+    return redirectTo('sign-in.php', 'Registration successful!');
+} else {
+    echo 'Failed to register.';
 }
+
+getConnection()->close();

@@ -5,7 +5,7 @@ function getConnection(): mysqli
     return new mysqli('localhost', 'root', '', 'latihan_buatboilerplate_login_php');
 }
 
-function isLogin()
+function isLogin(): bool
 {
     if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
         return true;
@@ -53,14 +53,13 @@ function getUserById($id): array
     return $user;
 }
 
-function getUserByEmail(string $email): array
+function getUserByEmail(string $email): ?array
 {
     $sql = "SELECT * FROM users WHERE email = '$email'";
-    $user = [];
 
     $result = getConnection()->query($sql);
 
-    if ($result->num_rows !== 1) throw new \Exception("Pengguna tidak ditemukan");
+    if ($result->num_rows !== 1) return null;
 
     $user = $result->fetch_assoc();
     return $user;

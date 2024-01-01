@@ -1,3 +1,18 @@
+<?php
+
+require_once __DIR__ . './config.php';
+require_once __DIR__ . './helper.php';
+
+session_start();
+
+$AuthCheck = isLogin();
+
+if ($AuthCheck) {
+    redirectTo('./');
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
